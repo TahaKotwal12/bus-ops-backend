@@ -5,6 +5,10 @@ from app.config.settings import settings
 from app.config.logger import get_logger
 from sqlalchemy import text
 from app.infra.db.postgres.postgres_config import SessionLocal
+# Import models to register them with SQLAlchemy
+from app.infra.db.postgres.models import user
+# Import API routes
+from app.api.routes import auth
 
 APP_TITLE = "BusOps Backend"
 app = FastAPI(title=APP_TITLE, version="1.0.0")
@@ -20,10 +24,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes (will be added later)
-# app.include_router(auth.router, prefix="/api/v1")
-# app.include_router(depots.router, prefix="/api/v1")
-# ... more routers
+# Include API routes
+app.include_router(auth.router, prefix="/api/v1")
 
 @app.get("/")
 async def root():
